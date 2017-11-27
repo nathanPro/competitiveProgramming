@@ -11,25 +11,30 @@ int n;
 ll tot;
 Zi P[N];
 
-ll d (int i, int j) {
+ll d (int i, int j)
+{
     auto d = P[i] - P[j];
-    return real(d*conj(d)); 
+    return real(d*conj(d));
 }
-bool y_leq(int i, int j){ return imag(P[i]) < imag(P[j]); }
+bool y_leq(int i, int j)
+{
+    return imag(P[i]) < imag(P[j]);
+}
 
-int main(){
+int main()
+{
     scanf(" %d", &n);
     for (int i = 0; i < n; i++) {
         int a;
         scanf(" %d", &a);
         tot += a;
-        P[i] = {1 + i , tot};
+        P[i] = {1 + i, tot};
     }
     ll ans = d(0, 1);
     {
         int i = 0, j = 0;
         set<int, bool(*)(int, int)> zn(y_leq);
-        for (zn.insert(j++); j < n; zn.insert(j++)){
+        for (zn.insert(j++); j < n; zn.insert(j++)) {
             while(i < j && ans < real(P[j] - P[i]) * real(P[j] - P[i]))
                 zn.erase(i++);
             auto m = zn.lower_bound(j);
