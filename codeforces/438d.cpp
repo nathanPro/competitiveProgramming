@@ -1,4 +1,5 @@
-# include "bits/stdc++.h"
+#include "bits/stdc++.h"
+#define set PASSARINHO
 using namespace std;
 using ll = int64_t;
 
@@ -19,16 +20,14 @@ struct cell {
 
 int dig(int i, int q)
 {
-    while (i < n){
-        i <<= 1;
-        if (tree[i].m < q) i++;
-    }
+    while (i < n)
+        if (tree[i <<= 1].m < q) i++;
     return i - n;
 }
 
 int query (int l, int q)
 {
-    int r = n, aux = -1;
+    int r = n, i = -1;
     for (l += n, r += n; l < r; l >>= 1, r >>= 1){
         if (l&1){
             if (tree[l].m >= q) return dig(l, q);
@@ -36,23 +35,23 @@ int query (int l, int q)
         }
         if (r&1){
             if (tree[--r].m >= q)
-                aux = r;
+                i = r;
         }
     }
-    if (aux == -1) return n;
-    return dig(aux, q);
+    if (i == -1) return n;
+    return dig(i, q);
 }
 
-void seta (int i, int x)
+void set (int i, int x)
 {
     for (tree[i += n] = {x, x}; 1 < i; i >>= 1)
         tree[i>>1] = tree[i] + tree[i^1];
 }
 
-void change (int l, int r, int a)
+void change(int l, int r, int a)
 {
-    for (int i = query (l, a); i < r; i = query(i, a))
-        seta (i, (tree[i + n].m)%a);
+    for (int i = query(l, a); i < r; i = query(i, a))
+        set(i, (tree[i + n].m)%a);
 }
 
 ll sum (int l, int r)
@@ -85,7 +84,7 @@ int main()
         }
         if (t == 3){
             scanf(" %d%d", &l, &x);
-            seta (--l, x);
+            set (--l, x);
         }
     }
 }
